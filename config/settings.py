@@ -184,7 +184,7 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Habit Tracker API",
+    "TITLE": "Employee Task Tracker API",
     "DESCRIPTION": "Backend SPA трекера привычек (Atomic Habits)",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
