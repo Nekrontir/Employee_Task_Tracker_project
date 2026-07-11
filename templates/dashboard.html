@@ -1,0 +1,66 @@
+{% extends "base_ui.html" %}
+
+{% block title %}Панель управления — Трекер задач{% endblock %}
+
+{% block content %}
+  <h1 class="mb-3">Панель управления</h1>
+  <p class="text-muted">
+    Серверное приложение для управления задачами сотрудников и анализа их загруженности.
+  </p>
+
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Сотрудники</h5>
+          <p class="card-text">
+            Просмотр и управление списком сотрудников (CRUD).
+          </p>
+          <a href="{% url 'ui-users' %}" class="btn btn-primary btn-sm">
+            Открыть страницу сотрудников
+          </a>
+          <a href="/api/users/" class="btn btn-link btn-sm">
+            Открыть API сотрудников
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Задачи</h5>
+          <p class="card-text">
+            Просмотр и управление задачами сотрудников (CRUD).
+          </p>
+          <a href="{% url 'ui-tasks' %}" class="btn btn-primary btn-sm">
+            Открыть страницу задач
+          </a>
+          <a href="/api/tasks/" class="btn btn-link btn-sm">
+            Открыть API задач
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Аналитика</h5>
+          <p class="card-text">
+            Специальные эндпоинты для анализа загруженности и поиска важных задач.
+          </p>
+          <a href="{% url 'ui-analytics' %}" class="btn btn-outline-secondary btn-sm">
+            Страница аналитики
+          </a>
+          <a href="/api/busy-employees/" class="btn btn-link btn-sm">
+            API занятых сотрудников
+          </a>
+          <a href="/api/important-tasks/" class="btn btn-link btn-sm">
+            API важных задач
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

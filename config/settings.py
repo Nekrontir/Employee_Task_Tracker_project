@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "employee_tasks",
     "users",
+    "ui",
 ]
 
 MIDDLEWARE = [
@@ -68,13 +69,15 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.static",
+                "django.template.context_processors.media",
             ],
         },
     },
@@ -155,6 +158,10 @@ AUTH_USER_MODEL = "users.User"
 CORS_ALLOWED_ORIGINS = [host.strip() for host in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if host.strip()]
 
 REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
