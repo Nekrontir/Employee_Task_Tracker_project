@@ -1,9 +1,9 @@
 from django.urls import reverse
-from django.db import models
-from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
+from rest_framework.test import APIClient, APITestCase
 
 from users.models import User
+
 from .models import Task
 
 

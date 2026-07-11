@@ -1,7 +1,7 @@
 from django.urls import reverse
-from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.test import APIClient, APITestCase
+
 from .models import User
 
 
@@ -76,8 +76,8 @@ class UserViewSetTests(APITestCase):
         response = self.client.delete(self.detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(User.objects.filter(id=self.employee.id).exists())
-        
-        
+
+
 class JWTAuthTests(APITestCase):
     def setUp(self):
         self.client = APIClient()

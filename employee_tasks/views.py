@@ -93,13 +93,10 @@ class ImportantTasksView(APIView):
         ]
 
         # загрузка сотрудников
-        employees_qs = (
-            User.objects.filter(role="employee", is_active_employee=True)
-            .annotate(
-                active_tasks_count=Count(
-                    "assigned_tasks",
-                    filter=Q(assigned_tasks__status__in=active_statuses),
-                )
+        employees_qs = User.objects.filter(role="employee", is_active_employee=True).annotate(
+            active_tasks_count=Count(
+                "assigned_tasks",
+                filter=Q(assigned_tasks__status__in=active_statuses),
             )
         )
 
@@ -129,13 +126,10 @@ class ImportantTasksView(APIView):
             least_loaded = employees_qs.filter(active_tasks_count=min_load)
 
             # исполнители дочерних задач в работе
-            child_assignees = (
-                User.objects.filter(
-                    assigned_tasks__parent_task=task,
-                    assigned_tasks__status__in=in_work_statuses,
-                )
-                .distinct()
-            )
+            child_assignees = User.objects.filter(
+                assigned_tasks__parent_task=task,
+                assigned_tasks__status__in=in_work_statuses,
+            ).distinct()
 
             suggested_employees = set()
 
