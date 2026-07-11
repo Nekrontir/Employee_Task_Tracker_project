@@ -47,7 +47,7 @@ class User(AbstractUser):
     )
     is_active_employee = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     objects = UserManager()
 
     USERNAME_FIELD = "email"

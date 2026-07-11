@@ -1,6 +1,7 @@
-from rest_framework import viewsets, permissions
+from rest_framework import permissions, viewsets
+
 from .models import User
-from .serializers import UserSerializer, UserCreateSerializer
+from .serializers import UserCreateSerializer, UserSerializer
 
 
 class IsManager(permissions.BasePermission):
@@ -10,9 +11,7 @@ class IsManager(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return bool(
-            request.user
-            and request.user.is_authenticated
-            and getattr(request.user, "role", None) == "manager"
+            request.user and request.user.is_authenticated and getattr(request.user, "role", None) == "manager"
         )
 
 

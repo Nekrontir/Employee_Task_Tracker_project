@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Task
+
 from users.serializers import UserSerializer
+
+from .models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -39,3 +41,18 @@ class TaskSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         read_only_fields = ("id", "created_at", "updated_at")
+
+
+class BusyEmployeeSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    full_name = serializers.CharField()
+    position = serializers.CharField(allow_blank=True)
+    active_tasks_count = serializers.IntegerField()
+
+
+class ImportantTaskSerializer(serializers.Serializer):
+    important_task = serializers.CharField()
+    deadline = serializers.DateField(allow_null=True)
+    employees = serializers.ListField(
+        child=serializers.CharField(),
+    )
