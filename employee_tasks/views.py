@@ -92,10 +92,14 @@ class ImportantTasksView(APIView):
             Task.Status.BLOCKED,
         ]
 
-        employees_qs = User.objects.filter(role="employee", is_active_employee=True).annotate(
-            active_tasks_count=Count(
-                "assigned_tasks",
-                filter=Q(assigned_tasks__status__in=active_statuses),
+        # загрузка сотрудников
+        employees_qs = (
+            User.objects.filter(role="employee", is_active_employee=True)
+            .annotate(
+                active_tasks_count=Count(
+                    "assigned_tasks",
+                    filter=Q(assigned_tasks__status__in=active_statuses),
+                )
             )
         )
 
@@ -105,6 +109,7 @@ class ImportantTasksView(APIView):
 
         min_load = employees_qs.aggregate(min_load=Min("active_tasks_count"))["min_load"]
 
+        # важные задачи
         important_tasks_qs = (
             Task.objects.filter(
                 status=Task.Status.NEW,
@@ -120,12 +125,17 @@ class ImportantTasksView(APIView):
         results = []
 
         for task in important_tasks_qs:
+            # наименее загруженные
             least_loaded = employees_qs.filter(active_tasks_count=min_load)
 
-            child_assignees = User.objects.filter(
-                assigned_tasks__parent_task=task,
-                assigned_tasks__status__in=in_work_statuses,
-            ).distinct()
+            # исполнители дочерних задач в работе
+            child_assignees = (
+                User.objects.filter(
+                    assigned_tasks__parent_task=task,
+                    assigned_tasks__status__in=in_work_statuses,
+                )
+                .distinct()
+            )
 
             suggested_employees = set()
 
@@ -133,8 +143,7 @@ class ImportantTasksView(APIView):
                 suggested_employees.add(emp.full_name)
 
             for emp in child_assignees:
-                if emp.active_tasks_count <= min_load + 2:
-                    suggested_employees.add(emp.full_name)
+                suggested_employees.add(emp.full_name)
 
             results.append(
                 {

@@ -32,6 +32,9 @@ db = [
     "psycopg2-binary (>=2.9.12,<3.0.0)",
     "redis (>=8.0.1,<9.0.0)"
 ]
+dev = [
+    "coverage (>=7.15.0,<8.0.0)"
+]
 
 [tool.black]
 line-length = 119
