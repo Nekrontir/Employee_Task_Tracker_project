@@ -63,7 +63,7 @@ jobs:
         env:
           SECRET_KEY: dummy
           DEBUG: "True"
-          NAME: adapp
+          NAME: ettdb
           USER: postgres
           PASSWORD: postgres
           HOST: localhost

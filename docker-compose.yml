@@ -50,12 +50,11 @@ services:
       - "80:80"
     volumes:
       - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - static_volume:/home/nekron/app/staticfiles:ro
-      - media_volume:/home/nekron/app/media:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
     depends_on:
       - web
     restart: always
-
 
 volumes:
   postgres_data:
