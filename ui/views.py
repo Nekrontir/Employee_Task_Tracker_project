@@ -1,9 +1,10 @@
+from django.contrib.auth import logout
 from django.db.models import Count, Min, Q
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+
 from employee_tasks.models import Task
 from users.models import User
-from django.contrib.auth import logout
-from django.shortcuts import redirect
+
 
 def dashboard_view(request):
     context = {
