@@ -8,6 +8,15 @@
     Серверное приложение для управления задачами сотрудников и анализа их загруженности.
   </p>
 
+  <div class="alert alert-warning" role="alert">
+    {% if user.is_authenticated %}
+      Вы авторизованы как {{ user.full_name }} ({{ user.role }}).
+    {% else %}
+      Для работы с данными сотрудников и задач потребуется авторизация.
+      Нажмите кнопку «Войти» в верхнем меню.
+    {% endif %}
+  </div>
+
   <div class="row mt-4">
     <div class="col-md-4 mb-3">
       <div class="card h-100">
@@ -16,9 +25,15 @@
           <p class="card-text">
             Просмотр и управление списком сотрудников (CRUD).
           </p>
-          <a href="{% url 'ui-users' %}" class="btn btn-primary btn-sm">
-            Открыть страницу сотрудников
-          </a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'ui-users' %}" class="btn btn-primary btn-sm">
+              Открыть страницу сотрудников
+            </a>
+          {% else %}
+            <a href="{% url 'ui-login' %}" class="btn btn-primary btn-sm">
+              Войти, чтобы открыть сотрудников
+            </a>
+          {% endif %}
           <a href="/api/users/" class="btn btn-link btn-sm">
             Открыть API сотрудников
           </a>
@@ -33,9 +48,15 @@
           <p class="card-text">
             Просмотр и управление задачами сотрудников (CRUD).
           </p>
-          <a href="{% url 'ui-tasks' %}" class="btn btn-primary btn-sm">
-            Открыть страницу задач
-          </a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'ui-tasks' %}" class="btn btn-primary btn-sm">
+              Открыть страницу задач
+            </a>
+          {% else %}
+            <a href="{% url 'ui-login' %}" class="btn btn-primary btn-sm">
+              Войти, чтобы открыть задачи
+            </a>
+          {% endif %}
           <a href="/api/tasks/" class="btn btn-link btn-sm">
             Открыть API задач
           </a>
@@ -50,9 +71,15 @@
           <p class="card-text">
             Специальные эндпоинты для анализа загруженности и поиска важных задач.
           </p>
-          <a href="{% url 'ui-analytics' %}" class="btn btn-outline-secondary btn-sm">
-            Страница аналитики
-          </a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'ui-analytics' %}" class="btn btn-outline-secondary btn-sm">
+              Страница аналитики
+            </a>
+          {% else %}
+            <a href="{% url 'ui-login' %}" class="btn btn-outline-secondary btn-sm">
+              Войти, чтобы открыть аналитику
+            </a>
+          {% endif %}
           <a href="/api/busy-employees/" class="btn btn-link btn-sm">
             API занятых сотрудников
           </a>

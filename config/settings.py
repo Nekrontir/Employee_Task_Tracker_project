@@ -78,6 +78,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.template.context_processors.static",
                 "django.template.context_processors.media",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -192,9 +193,13 @@ SIMPLE_JWT = {
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Employee Task Tracker API",
-    "DESCRIPTION": "Backend SPA трекера привычек (Atomic Habits)",
+    "DESCRIPTION": "Трекер задач сотрудников",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
     "SCHEMA_PATH_PREFIX": "/api/",
 }
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/login/"
