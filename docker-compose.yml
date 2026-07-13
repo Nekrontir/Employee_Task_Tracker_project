@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:16
+    container_name: skypro_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${NAME}
+      POSTGRES_USER: ${USER}
+      POSTGRES_PASSWORD: ${PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    restart: always
+
+  web:
+    build: .
+    container_name: skypro_web
+    command: >
+      sh -c "echo 'Waiting for PostgreSQL at $$HOST:$$PORT...';
+      until pg_isready -h $$HOST -p $$PORT -U $$USER > /dev/null 2>&1; do
+        echo 'PostgreSQL is not ready yet, waiting...';
+        sleep 2;
+      done;
+      echo 'PostgreSQL is ready.';
+      python manage.py migrate --noinput;
+      python manage.py collectstatic --noinput;
+      gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    env_file:
+      - .env
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: ${USER}
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    restart: always
+
+  nginx:
+    image: nginx:1.27
+    container_name: skypro_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    depends_on:
+      - web
+    restart: always
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
