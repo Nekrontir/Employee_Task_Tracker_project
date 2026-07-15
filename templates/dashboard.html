@@ -34,9 +34,6 @@
               Войти, чтобы открыть сотрудников
             </a>
           {% endif %}
-          <a href="/api/users/" class="btn btn-link btn-sm">
-            Открыть API сотрудников
-          </a>
         </div>
       </div>
     </div>
@@ -57,19 +54,16 @@
               Войти, чтобы открыть задачи
             </a>
           {% endif %}
-          <a href="/api/tasks/" class="btn btn-link btn-sm">
-            Открыть API задач
           </a>
         </div>
       </div>
     </div>
-
     <div class="col-md-4 mb-3">
       <div class="card h-100">
         <div class="card-body">
           <h5 class="card-title">Аналитика</h5>
           <p class="card-text">
-            Специальные эндпоинты для анализа загруженности и поиска важных задач.
+            Анализ загруженности и поиск важных задач.
           </p>
           {% if user.is_authenticated %}
             <a href="{% url 'ui-analytics' %}" class="btn btn-outline-secondary btn-sm">
@@ -80,11 +74,6 @@
               Войти, чтобы открыть аналитику
             </a>
           {% endif %}
-          <a href="/api/busy-employees/" class="btn btn-link btn-sm">
-            API занятых сотрудников
-          </a>
-          <a href="/api/important-tasks/" class="btn btn-link btn-sm">
-            API важных задач
           </a>
         </div>
       </div>
