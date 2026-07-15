@@ -1,5 +1,5 @@
-from django.contrib.auth import logout
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.db.models import Count, Min, Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -89,6 +89,7 @@ class TaskUpdateView(UpdateView):
         messages.success(self.request, "Задача обновлена.")
         return super().form_valid(form)
 
+
 class TaskDeleteView(DeleteView):
     model = Task
     template_name = "tasks/task_confirm_delete.html"
@@ -97,7 +98,6 @@ class TaskDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Задача удалена.")
         return super().delete(request, *args, **kwargs)
-
 
 
 def analytics_view(request):
