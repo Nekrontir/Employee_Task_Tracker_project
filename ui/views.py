@@ -1,15 +1,17 @@
+from django.contrib import messages
 from django.contrib.auth import logout
 from django.db.models import Count, Min, Q
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 
+from employee_tasks.forms import TaskForm
 from employee_tasks.models import Task
 from users.models import User
 
 
 def dashboard_view(request):
-    context = {
-        "title": "Панель управления",
-    }
+    context = {"title": "Панель управления"}
     return render(request, "dashboard.html", context)
 
 
@@ -23,9 +25,7 @@ def users_list_view(request):
 
 
 def tasks_list_view(request):
-    # читаем приоритет из GET-параметров
     priority = request.GET.get("priority")
-
     tasks_qs = Task.objects.select_related("assignee", "parent_task")
 
     if priority in [Task.Priority.LOW, Task.Priority.MEDIUM, Task.Priority.HIGH, Task.Priority.CRITICAL]:
@@ -39,6 +39,65 @@ def tasks_list_view(request):
         "selected_priority": priority,
     }
     return render(request, "tasks_list.html", context)
+
+
+class TaskDetailView(DetailView):
+    model = Task
+    template_name = "tasks/task_detail.html"
+    context_object_name = "task"
+
+
+class TaskCreateView(CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/task_form.html"
+    success_url = reverse_lazy("ui-tasks")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        is_manager_or_admin = self.request.user.is_superuser or self.request.user.role == "manager"
+
+        form.instance.created_by = self.request.user
+        if not is_manager_or_admin:
+            form.instance.assignee = self.request.user
+
+        messages.success(self.request, "Задача создана.")
+        return super().form_valid(form)
+
+
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/task_form.html"
+    success_url = reverse_lazy("ui-tasks")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        is_manager_or_admin = self.request.user.is_staff or self.request.user.role == "manager"
+
+        if not is_manager_or_admin:
+            form.instance.assignee = self.request.user
+
+        messages.success(self.request, "Задача обновлена.")
+        return super().form_valid(form)
+
+
+class TaskDeleteView(DeleteView):
+    model = Task
+    template_name = "tasks/task_confirm_delete.html"
+    success_url = reverse_lazy("ui-tasks")
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Задача удалена.")
+        return super().delete(request, *args, **kwargs)
 
 
 def analytics_view(request):
