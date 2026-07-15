@@ -1,0 +1,29 @@
+{% extends "base_ui.html" %}
+
+{% block title %}{{ task.title }} — Трекер задач{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="mb-0">{{ task.title }}</h1>
+  <div class="btn-group">
+    <a href="{% url 'ui-task-edit' task.pk %}" class="btn btn-outline-secondary">
+      Редактировать
+    </a>
+    <a href="{% url 'ui-tasks' %}" class="btn btn-outline-primary">
+      К списку
+    </a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <p><strong>Описание:</strong><br>{{ task.description|default:"—" }}</p>
+    <p><strong>Исполнитель:</strong> {% if task.assignee %}{{ task.assignee.get_full_name }}{% else %}—{% endif %}</p>
+    <p><strong>Создал:</strong> {% if task.created_by %}{{ task.created_by.get_full_name }}{% else %}—{% endif %}</p>
+    <p><strong>Статус:</strong> {{ task.get_status_display }}</p>
+    <p><strong>Приоритет:</strong> {{ task.get_priority_display }}</p>
+    <p><strong>Срок:</strong> {{ task.deadline|default:"—" }}</p>
+    <p><strong>Родительская задача:</strong> {% if task.parent_task %}{{ task.parent_task.title }}{% else %}—{% endif %}</p>
+  </div>
+</div>
+{% endblock %}

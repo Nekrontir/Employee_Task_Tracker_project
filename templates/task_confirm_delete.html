@@ -1,0 +1,22 @@
+{% extends "base_ui.html" %}
+
+{% block title %}Удаление задачи — Трекер задач{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="alert alert-warning">
+      <h1 class="h4">Удалить задачу?</h1>
+      <p class="mb-0">
+        Вы собираетесь удалить задачу <strong>{{ object.title }}</strong>. Действие необратимо.
+      </p>
+    </div>
+
+    <form method="post" class="d-flex gap-2">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Да, удалить</button>
+      <a href="{% url 'ui-tasks' %}" class="btn btn-outline-secondary">Отмена</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

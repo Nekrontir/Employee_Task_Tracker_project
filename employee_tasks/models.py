@@ -53,6 +53,8 @@ class Task(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = "Задача"
+        verbose_name_plural = "Задачи"
         ordering = ["deadline", "title"]
 
     def __str__(self):
