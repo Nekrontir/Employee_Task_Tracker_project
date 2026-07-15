@@ -59,7 +59,7 @@ class TaskCreateView(CreateView):
         return kwargs
 
     def form_valid(self, form):
-        is_manager_or_admin = self.request.user.is_staff or self.request.user.role == "manager"
+        is_manager_or_admin = self.request.user.is_superuser or self.request.user.role == "manager"
 
         form.instance.created_by = self.request.user
         if not is_manager_or_admin:
