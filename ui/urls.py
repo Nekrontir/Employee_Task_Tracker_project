@@ -7,6 +7,10 @@ urlpatterns = [
     path("", views.dashboard_view, name="ui-dashboard"),
     path("users/", views.users_list_view, name="ui-users"),
     path("tasks/", views.tasks_list_view, name="ui-tasks"),
+    path("tasks/create/", views.TaskCreateView.as_view(), name="ui-task-create"),
+    path("tasks/<int:pk>/", views.TaskDetailView.as_view(), name="ui-task-detail"),
+    path("tasks/<int:pk>/edit/", views.TaskUpdateView.as_view(), name="ui-task-edit"),
+    path("tasks/<int:pk>/delete/", views.TaskDeleteView.as_view(), name="ui-task-delete"),
     path("analytics/", views.analytics_view, name="ui-analytics"),
     path(
         "login/",
