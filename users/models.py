@@ -54,6 +54,8 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["full_name"]
 
     class Meta:
+        verbose_name = ("Сотрудник")
+        verbose_name_plural = ("Сотрудники")
         ordering = ["full_name"]
 
     def __str__(self):
