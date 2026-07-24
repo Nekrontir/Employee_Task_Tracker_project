@@ -23,7 +23,7 @@
         <div class="card-body">
           <h5 class="card-title">Сотрудники</h5>
           <p class="card-text">
-            Просмотр и управление списком сотрудников (CRUD).
+            Просмотр списка сотрудников.
           </p>
           {% if user.is_authenticated %}
             <a href="{% url 'ui-users' %}" class="btn btn-primary btn-sm">
@@ -43,7 +43,7 @@
         <div class="card-body">
           <h5 class="card-title">Задачи</h5>
           <p class="card-text">
-            Просмотр и управление задачами сотрудников (CRUD).
+            Просмотр и управление задачами сотрудников.
           </p>
           {% if user.is_authenticated %}
             <a href="{% url 'ui-tasks' %}" class="btn btn-primary btn-sm">
